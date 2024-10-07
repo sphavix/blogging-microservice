@@ -1,6 +1,7 @@
 ﻿using Blogging.Api.Models.Domain;
 using Blogging.Api.Models.Dtos.Categories;
 using Blogging.Api.Persistance;
+using Blogging.Api.Repositories.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,11 @@ namespace Blogging.Api.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICategoryRepository _repository;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ICategoryRepository repository)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
 
@@ -29,8 +30,7 @@ namespace Blogging.Api.Controllers
                 UrlHandle = request.UrlHandle
             };
 
-            await _context.Categories.AddAsync(category);
-            await _context.SaveChangesAsync();
+            await _repository.CreateCategoryAsync(category);
 
             // Map domain model back to Dto
             var response = new CategoryDto
