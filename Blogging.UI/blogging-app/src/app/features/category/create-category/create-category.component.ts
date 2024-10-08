@@ -1,24 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CreateCategoryRequest } from '../models/create-category-request';
+import { CategoryService } from '../services/category.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-category',
   templateUrl: './create-category.component.html',
   styleUrls: ['./create-category.component.css']
 })
-export class CreateCategoryComponent {
+export class CreateCategoryComponent implements OnDestroy {
 
   model: CreateCategoryRequest;
+  private createCategorySubscription?: Subscription;
 
-  constructor(){
+  constructor(private categoryService: CategoryService){
     this.model = {
       name: '',
       urlHandle: ''
     };
   }
+  
 
 
   handleOnCreate(){
-    console.log(this.model)
+    this.createCategorySubscription = this.categoryService.createCategory(this.model).subscribe({
+      next: (response) => {
+        console.log('The api call was successful');
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.createCategorySubscription?.unsubscribe();
   }
 }
