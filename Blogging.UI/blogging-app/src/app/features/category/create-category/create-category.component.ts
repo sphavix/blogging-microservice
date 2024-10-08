@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { CreateCategoryRequest } from '../models/create-category-request';
 import { CategoryService } from '../services/category.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-category',
@@ -13,7 +14,7 @@ export class CreateCategoryComponent implements OnDestroy {
   model: CreateCategoryRequest;
   private createCategorySubscription?: Subscription;
 
-  constructor(private categoryService: CategoryService){
+  constructor(private categoryService: CategoryService, private router: Router){
     this.model = {
       name: '',
       urlHandle: ''
@@ -25,7 +26,7 @@ export class CreateCategoryComponent implements OnDestroy {
   handleOnCreate(){
     this.createCategorySubscription = this.categoryService.createCategory(this.model).subscribe({
       next: (response) => {
-        console.log('The api call was successful');
+        this.router.navigateByUrl('/manage/categories');
       }
     });
   }

@@ -4,4 +4,20 @@
     <div class="d-flex justify-content-end mt-3">
         <a routerLink="/manage/categories/create" class="btn btn-primary">Add Category</a>
     </div>
+
+    <ng-container *ngIf="categories$ | async as categories">
+        <table class="table table-striped mt-3">
+            <thead>
+                <th>Name</th>
+                <th>Url Handle</th>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let category of categories">
+                    <td>{{category.name}}</td>
+                    <td>{{category.urlHandle}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
 </div>

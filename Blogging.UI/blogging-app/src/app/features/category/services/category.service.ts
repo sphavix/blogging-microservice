@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CreateCategoryRequest } from '../models/create-category-request';
+import { Category } from '../models/category.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,10 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   createCategory(model: CreateCategoryRequest): Observable<void> {
-    return this.http.post<void>('https://localhost:7062/api/categories', model);
+    return this.http.post<void>(`${environment.apiBaseUrl}/api/categories`, model);
+  }
+
+  getCategories(): Observable<Category[]>{
+    return this.http.get<Category[]>(`${environment.apiBaseUrl}/api/categories`);
   }
 }

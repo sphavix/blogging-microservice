@@ -18,8 +18,28 @@ namespace Blogging.Api.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
+        // GET: https://localhost:7026/api/categories
+        [HttpGet]
+        public async Task<IActionResult> GetCategories()
+        {
+            var categories = await _repository.GetCategoriesAsync();
 
-        // 
+            // Map domain model to Dto
+            var response = new List<CategoryDto>();
+            foreach(var category in categories)
+            {
+                response.Add(new CategoryDto
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    UrlHandle = category.UrlHandle
+                });
+            }
+            return Ok(response);
+        }
+
+
+        // POST: https://localhost:7026/api/categories
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequestDto request)
         {
