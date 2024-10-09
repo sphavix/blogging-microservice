@@ -6,5 +6,8 @@ namespace Blogging.Api.Repositories.Contracts
     {
         Task<IEnumerable<Category>> GetCategoriesAsync();
         Task<Category> CreateCategoryAsync(Category category);
+        Task<Category?> GetCategoryAsync(Guid id);
+
+        Task<Category?> UpdateCategoryAsync(Category category);
     }
 }
