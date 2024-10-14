@@ -120,6 +120,27 @@ namespace Blogging.Api.Controllers
             return Ok(response);
         }
 
+        // DELETE: https://localhost:7026/api/categories/{id}
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute] Guid id)
+        {
+            var category = await _repository.DeleteCategoryAsync(id);
+            if(category is null)
+            {
+                return NotFound();
+            }
+
+            // Map domain model to Dto
+            var response = new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle
+            };
+            return NoContent();
+        }
+
 
     }
 }

@@ -46,5 +46,18 @@ namespace Blogging.Api.Repositories
 
             return null;
         }
+
+        public async Task<Category?> DeleteCategoryAsync(Guid id)
+        {
+            var item = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(true);
+            if(item is null)
+            {
+                return null;
+            }
+
+            _context.Categories.Remove(item);
+            await _context.SaveChangesAsync();
+            return item;
+        }
     }
 }

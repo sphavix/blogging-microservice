@@ -9,5 +9,6 @@ namespace Blogging.Api.Repositories.Contracts
         Task<Category?> GetCategoryAsync(Guid id);
 
         Task<Category?> UpdateCategoryAsync(Category category);
+        Task<Category?> DeleteCategoryAsync(Guid id); 
     }
 }
