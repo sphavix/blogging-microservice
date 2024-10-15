@@ -2,6 +2,7 @@
 using Blogging.Api.Models.Dtos.Categories;
 using Blogging.Api.Persistance;
 using Blogging.Api.Repositories.Contracts;
+using Blogging.Api.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +25,14 @@ namespace Blogging.Api.Controllers
         {
             var categories = await _repository.GetCategoriesAsync();
 
+
+            //var response = categories.MapToResponse(); // Manual mapping method also works, but it is also still cumbersome because it
+                                                         // needs us to have multiple Dtos for request/response. Clean code & S/C is still maintained.
+                                                         // Mappings are under Utilities folder.
+
             // Map domain model to Dto
             var response = new List<CategoryDto>();
-            foreach(var category in categories)
+            foreach (var category in categories)
             {
                 response.Add(new CategoryDto
                 {
@@ -64,8 +70,13 @@ namespace Blogging.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequestDto request)
         {
-            // Map Dto to domain model
+
             //This can be also be done using the 3rd party package AutoMapper but we are just using the below method.
+            //var category = request.MapToCategory();   // Manual mapping method also works, but it is also still cumbersome because it
+                                                        // needs us to have multiple Dtos for request/response. Clean code & S/C is still maintained.
+                                                        // Mappings are under Utilities folder.
+
+            // Map Dto to domain model
             var category = new Category
             {
                 Name = request.Name,
@@ -74,8 +85,13 @@ namespace Blogging.Api.Controllers
 
             await _repository.CreateCategoryAsync(category);
 
-            // Map domain model back to Dto
+
             //This can be also be done using the 3rd party package AutoMapper but we are just using the below method.
+            //var response = category.MapToResponse();  // Manual mapping method also works, but it is also still cumbersome because it
+                                                        // needs us to have multiple Dtos for request/response. Clean code & S/C is still maintained.
+                                                        // Mappings are under Utilities folder.
+
+            // Map domain model back to Dto
             var response = new CategoryDto
             {
                 Id = category.Id,
