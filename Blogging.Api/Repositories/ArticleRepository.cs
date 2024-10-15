@@ -1,6 +1,7 @@
 ﻿using Blogging.Api.Models.Domain;
 using Blogging.Api.Persistance;
 using Blogging.Api.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blogging.Api.Repositories
 {
@@ -11,6 +12,11 @@ namespace Blogging.Api.Repositories
         public ArticleRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task<IEnumerable<Article>> GetArticlesAsync()
+        {
+            return await _context.Articles.ToListAsync();
         }
 
         public async Task<Article> CreateArticleAsync(Article article)

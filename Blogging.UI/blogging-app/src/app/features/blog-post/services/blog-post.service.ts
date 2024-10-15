@@ -14,6 +14,10 @@ export class BlogPostService {
 
   }
 
+  getBlogPosts(): Observable<Article[]> {
+    return this.http.get<Article[]>(`${environment.apiBaseUrl}/api/articles`);
+  }
+
   createBlogPost(data: CreateArticleRequest) : Observable<Article> {
     return this.http.post<Article>(`${environment.apiBaseUrl}/api/articles`, data);
   }

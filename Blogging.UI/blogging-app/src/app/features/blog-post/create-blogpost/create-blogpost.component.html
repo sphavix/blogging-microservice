@@ -22,11 +22,28 @@
 
             <div class="mt-3">
                 <label for="content" class="form-label">Content</label>
-                <textarea type="text" id="content" name="content" class="form-control" placeholder="Content" [(ngModel)]="model.content"></textarea>
+                <!-- This is where the markdown is used -->
+                <div class="d-flex flex-row">
+                    <div class="col-6 p-2">
+                        <textarea style="height: 350px;max-height: 350px;" type="text" id="content" name="content" class="form-control" placeholder="Content" [(ngModel)]="model.content"></textarea>
+                    </div>
+
+                    <div class="col-6 p-2" style="max-height: 350px; overflow-y: scroll;">
+                        <markdown [data]="model.content"></markdown>
+                    </div>
+                </div>
+                <!-- <textarea type="text" id="content" name="content" class="form-control" placeholder="Content" [(ngModel)]="model.content"></textarea> -->
             </div>
 
             <div class="mt-3">
                 <label for="featureImage" class="form-label">Feature Picture</label>
+
+                <ng-container *ngIf="model.featureImage !== ''">
+                    <div>
+                        <img [src]="model.featureImage" height="100" class="my-2" />
+                    </div>
+                </ng-container>
+
                 <input type="upload" id="featureImage" name="featureImage" class="form-control" placeholder="Picture" [(ngModel)]="model.featureImage" />
             </div>
 

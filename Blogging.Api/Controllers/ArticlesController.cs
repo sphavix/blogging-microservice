@@ -17,6 +17,33 @@ namespace Blogging.Api.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
+        // GET: https://localhost:7026/api/articles
+        [HttpGet]
+        public async Task<IActionResult> GetArticles()
+        {
+            var articles = await _repository.GetArticlesAsync();
+
+            // Map domain model to Dto
+            var response = new List<ArticleDto>();
+            foreach (var article in articles)
+            {
+                response.Add(new ArticleDto
+                {
+                    Id = article.Id,
+                    Title = article.Title,
+                    UrlHandle = article.UrlHandle,
+                    ShortDescription = article.ShortDescription,
+                    Content = article.Content,
+                    IsVisible = article.IsVisible,
+                    PublishedDate = article.PublishedDate,
+                    FeatureImageUrl = article.FeatureImageUrl,
+                    Author = article.Author
+                });
+            }
+
+            return Ok(response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromBody] CreateArticleRequestDto request)
         {
