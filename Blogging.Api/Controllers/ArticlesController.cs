@@ -1,5 +1,6 @@
 ﻿using Blogging.Api.Models.Domain;
 using Blogging.Api.Models.Dtos.Article;
+using Blogging.Api.Models.Dtos.Categories;
 using Blogging.Api.Repositories.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace Blogging.Api.Controllers
     public class ArticlesController : ControllerBase
     {
         private readonly IArticleRepository _repository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public ArticlesController(IArticleRepository repository)
+        public ArticlesController(IArticleRepository repository, ICategoryRepository categoryRepository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
         }
 
         // GET: https://localhost:7026/api/articles
@@ -37,7 +40,13 @@ namespace Blogging.Api.Controllers
                     IsVisible = article.IsVisible,
                     PublishedDate = article.PublishedDate,
                     FeatureImageUrl = article.FeatureImageUrl,
-                    Author = article.Author
+                    Author = article.Author,
+                    Categories = article.Categories.Select(x => new CategoryDto
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        UrlHandle = x.UrlHandle
+                    }).ToList()
                 });
             }
 
@@ -57,8 +66,18 @@ namespace Blogging.Api.Controllers
                 IsVisible = request.IsVisible,
                 PublishedDate = request.PublishedDate,
                 FeatureImageUrl = request.FeatureImageUrl,
-                Author = request.Author
+                Author = request.Author,
+                Categories = new List<Category>()
             };
+
+            foreach(var category in request.Categories)
+            {
+                var existingCategory = await _categoryRepository.GetCategoryAsync(category);
+                if(existingCategory is not null)
+                {
+                    article.Categories.Add(existingCategory);
+                }
+            }
 
             article = await _repository.CreateArticleAsync(article);
 
@@ -74,7 +93,13 @@ namespace Blogging.Api.Controllers
                 IsVisible = article.IsVisible,
                 PublishedDate = article.PublishedDate,
                 FeatureImageUrl = article.FeatureImageUrl,
-                Author = article.Author
+                Author = article.Author,
+                Categories = article.Categories.Select(x => new CategoryDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle
+                }).ToList()
             };
 
             return Ok(response);

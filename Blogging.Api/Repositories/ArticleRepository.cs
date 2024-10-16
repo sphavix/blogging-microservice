@@ -16,7 +16,7 @@ namespace Blogging.Api.Repositories
 
         public async Task<IEnumerable<Article>> GetArticlesAsync()
         {
-            return await _context.Articles.ToListAsync();
+            return await _context.Articles.Include(x => x.Categories).ToListAsync();
         }
 
         public async Task<Article> CreateArticleAsync(Article article)

@@ -7,13 +7,14 @@
     </div>
 
     <ng-container *ngIf="blogPosts$ | async as blogPosts">
-        <table class="table table-striped mt-3">
+        <table class="table table-responsive mt-3">
             <thead>
                 <tr>
                     <th>Title</th>
                     <th>Summary</th>
                     <th>Published Date</th>
                     <th>Author</th>
+                    <th>Category</th>
                 </tr>
             </thead>
 
@@ -21,8 +22,14 @@
                 <tr *ngFor="let blogpost of blogPosts">
                     <td>{{blogpost.title}}</td>
                     <td>{{blogpost.shortDescription}}</td>
+                   
                     <td>{{blogpost.publishedDate}}</td>
                     <td>{{blogpost.author}}</td>
+                    <td>
+                        <span *ngFor="let category of blogpost.categories">
+                            <span class="badge bg-secondary me-2">{{category.name}}</span>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </table>

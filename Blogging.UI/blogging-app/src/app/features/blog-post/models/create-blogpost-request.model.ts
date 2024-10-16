@@ -7,4 +7,5 @@ export interface CreateArticleRequest {
     author: string;
     publishedDate: Date;
     isVisible: boolean;
+    categories: string[];
 }
