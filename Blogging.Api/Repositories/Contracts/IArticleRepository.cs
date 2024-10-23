@@ -8,5 +8,6 @@ namespace Blogging.Api.Repositories.Contracts
         Task<Article?> GetArticleAsync(Guid id);
         Task<Article> CreateArticleAsync(Article article);
         Task<Article?> UpdateArticleAsync(Article article);
+        Task<Article?> DeleteArticleAsync(Guid id);
     }
 }

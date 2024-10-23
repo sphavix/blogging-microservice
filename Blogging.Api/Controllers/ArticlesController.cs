@@ -201,5 +201,34 @@ namespace Blogging.Api.Controllers
 
             return Ok(response);
         }
+
+        // DELETE: https://localhost:7026/api/articles/{id}
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteArticle([FromRoute] Guid id)
+        {
+            var removedArticle = await _repository.DeleteArticleAsync(id);
+
+            if (removedArticle is null)
+            {
+                return NotFound();
+            }
+
+            // Map domain model to Dto for response
+            //var response = new ArticleDto
+            //{
+            //    Id = removedArticle.Id,
+            //    Title = removedArticle.Title,
+            //    UrlHandle = removedArticle.UrlHandle,
+            //    ShortDescription = removedArticle.ShortDescription,
+            //    Content = removedArticle.Content,
+            //    IsVisible = removedArticle.IsVisible,
+            //    PublishedDate = removedArticle.PublishedDate,
+            //    FeatureImageUrl = removedArticle.FeatureImageUrl,
+            //    Author = removedArticle.Author
+            //};
+
+            return NoContent();
+        }
     }
 }

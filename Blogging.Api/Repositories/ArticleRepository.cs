@@ -51,5 +51,18 @@ namespace Blogging.Api.Repositories
 
             return article;
         }
+
+        public async Task<Article?> DeleteArticleAsync(Guid id)
+        {
+            var article = await _context.Articles.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(article != null)
+            {
+                _context.Articles.Remove(article);
+                await _context.SaveChangesAsync();
+                return article;
+            }
+            return null;
+        }
     }
 }
