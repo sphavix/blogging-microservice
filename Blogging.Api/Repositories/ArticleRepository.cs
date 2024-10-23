@@ -19,10 +19,36 @@ namespace Blogging.Api.Repositories
             return await _context.Articles.Include(x => x.Categories).ToListAsync();
         }
 
+        public async Task<Article?> GetArticleAsync(Guid id)
+        {
+            var article = await _context.Articles.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == id);
+            return article;
+        }
+
         public async Task<Article> CreateArticleAsync(Article article)
         {
             await _context.Articles.AddAsync(article);
             await _context.SaveChangesAsync();
+            return article;
+        }
+
+        public async Task<Article?> UpdateArticleAsync(Article article)
+        {
+            var existingArticle = await _context.Articles.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == article.Id);
+
+            if(existingArticle is null)
+            {
+                return null;
+            }
+
+            // Update articles
+            _context.Entry(existingArticle).CurrentValues.SetValues(article);
+
+            // Update categories for the article
+            existingArticle.Categories = article.Categories;
+
+            await _context.SaveChangesAsync();
+
             return article;
         }
     }

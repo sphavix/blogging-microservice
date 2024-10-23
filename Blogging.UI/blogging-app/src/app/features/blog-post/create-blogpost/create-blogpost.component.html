@@ -51,7 +51,7 @@
                 <label for="publishedDate" class="form-label">Published Date</label>
                 <input type="date" id="publishedDate" name="publishedDate" class="form-control" 
                         value="{{model.publishedDate}}" 
-                        [ngModel]="model.publishedDate"
+                        [ngModel]="model.publishedDate | date: 'yyy-MM-dd'"
                         (ngModelChange)="model.publishedDate = $event"/>
             </div>
 
