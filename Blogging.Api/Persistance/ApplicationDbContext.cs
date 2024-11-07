@@ -12,5 +12,6 @@ namespace Blogging.Api.Persistance
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Article> Articles { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
     }
 }
