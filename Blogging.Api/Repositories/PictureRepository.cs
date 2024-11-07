@@ -1,6 +1,7 @@
 ﻿using Blogging.Api.Models.Domain;
 using Blogging.Api.Persistance;
 using Blogging.Api.Repositories.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blogging.Api.Repositories
 {
@@ -15,6 +16,12 @@ namespace Blogging.Api.Repositories
             _httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
+        public async Task<IEnumerable<Picture>> GetPictures()
+        {
+            return await _context.Pictures.ToListAsync();
+        }
+
         public async Task<Picture> UploadPicture(IFormFile file, Picture picture)
         {
             // Upload picture

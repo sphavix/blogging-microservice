@@ -16,6 +16,31 @@ namespace Blogging.Api.Controllers
         {
             _repository = repository;
         }
+
+        // GET: localhost:{PORT}/api/pictures
+        [HttpGet]
+        public async Task<IActionResult> GetPictures()
+        {
+            var pictures = await _repository.GetPictures();
+
+            // Map domain to Dto
+            var response = new List<PictureDto>();
+            foreach(var picture in pictures)
+            {
+                response.Add(new PictureDto
+                {
+                    Id = picture.Id,
+                    Title = picture.Title,
+                    FileExtension = picture.FileExtension,
+                    FileName = picture.FileName,
+                    DateCreated = picture.DateCreated,
+                    ImageUrl = picture.ImageUrl
+                });
+            }
+
+            return Ok(response);
+        }
+
         // POST: localhost:{PORT}/api/pictures
         [HttpPost]
         public async Task<IActionResult> UploadPicture([FromForm] IFormFile file, [FromForm] string fileName, [FromForm] string title)
