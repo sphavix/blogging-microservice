@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UploadPictureService } from './upload-picture.service';
 import { Observable } from 'rxjs';
 import { Picture } from '../../models/blog-picture.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-image-upload-selector',
@@ -15,6 +16,8 @@ export class ImageUploadSelectorComponent implements OnInit {
   fileName: string = '';
   title: string = '';
   pictures$?: Observable<Picture[]>;
+
+  @ViewChild('form', { static: false}) pictureUploadForm?: NgForm;
 
 
   constructor(private pictureService: UploadPictureService){
@@ -40,11 +43,15 @@ export class ImageUploadSelectorComponent implements OnInit {
 
       this.pictureService.uploadPicture(this.file, this.fileName, this.title).subscribe({
         next: (response) => {
-          
+          this.pictureUploadForm?.resetForm();
           this.getPictures();
         }
       });
     }
+  }
+
+  selectedPicture(picture: Picture): void {
+    this.pictureService.selectPicture(picture);
   }
 
 

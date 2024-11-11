@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Picture } from '../../models/blog-picture.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -8,6 +8,15 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class UploadPictureService {
+
+  // create a behavior subject for the model to trigger the observables
+  selectedPicture: BehaviorSubject<Picture> = new BehaviorSubject<Picture>({
+    id: '',
+    fileExtension: '',
+    fileName: '',
+    title: '',
+    pictureUrl: ''
+  });
 
   constructor(private http: HttpClient) { }
 
@@ -25,4 +34,14 @@ export class UploadPictureService {
     return this.http.post<Picture>(`${environment.apiBaseUrl}/api/pictures`, formData);
 
   }
+
+  selectPicture(picture: Picture): void {
+    this.selectedPicture.next(picture);
+  }
+
+  onSelectedPicture(): Observable<Picture> {
+    return this.selectedPicture.asObservable();
+  }
 }
+
+

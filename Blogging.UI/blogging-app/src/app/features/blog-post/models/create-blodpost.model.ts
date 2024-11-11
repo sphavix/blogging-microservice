@@ -5,7 +5,7 @@ export interface Article {
     title: string;
     shortDescription: string;
     content: string;
-    featureImage: string;
+    featureImageUrl: string;
     urlHandle: string;
     author: string;
     publishedDate: Date;

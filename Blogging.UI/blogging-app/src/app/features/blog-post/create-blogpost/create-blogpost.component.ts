@@ -20,7 +20,7 @@ export class CreateBlogpostComponent implements OnInit {
       title: '',
       shortDescription: '',
       content: '',
-      featureImage: '',
+      featureImageUrl: '',
       urlHandle: '',
       author: '',
       publishedDate: new Date(),

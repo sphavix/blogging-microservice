@@ -1,7 +1,7 @@
 export interface Picture {
     id: string;
     fileName: string;
-    tile: string;
+    title: string;
     fileExtension: string;
     pictureUrl: string;
 }

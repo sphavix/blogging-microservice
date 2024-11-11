@@ -9,12 +9,12 @@
             <div class="col-8 p-4" style="overflow-y: scroll;">
                 <ng-container *ngIf="pictures$ | async as pictures">
                     <div class="d-flex flex-wrap">
-                        <div *ngFor="let picture of pictures" 
+                        <div *ngFor="let picture of pictures" (click)="selectedPicture(picture)"
                             style="min-width: 100px; justify-content: center; cursor: pointer;" 
                             class="me-1 bg-white d-flex align-items-center flex-column border p-3">
-                            <img [src]="picture.pictureUrl" [title]="picture.tile" style="height: 100px;">
+                            <img [src]="picture.pictureUrl" [title]="picture.title" style="height: 100px;">
 
-                            <span class="mt-1">{{picture.fileName}}</span>
+                            <span class="mt-1">{{picture.title}}</span>
                         </div>
                     </div>
                 </ng-container>
