@@ -88,6 +88,41 @@ namespace Blogging.Api.Controllers
             return Ok(response);
          }
 
+        // GET: https://localhost:7026/api/articles/{urlHandle}
+        [HttpGet]
+        [Route("{urlHandle}")]
+        public async Task<IActionResult> GetArticleByUrl([FromRoute] string urlHandle)
+        {
+            var article = await _repository.GetArticleByUrl(urlHandle);
+
+            if (article == null)
+            {
+                return NotFound();
+            }
+
+            var response = new ArticleDto
+            {
+                Id = article.Id,
+                Title = article.Title,
+                UrlHandle = article.UrlHandle,
+                ShortDescription = article.ShortDescription,
+                Content = article.Content,
+                IsVisible = article.IsVisible,
+                PublishedDate = article.PublishedDate,
+                FeatureImageUrl = article.FeatureImageUrl,
+                Author = article.Author,
+                Categories = article.Categories.Select(x => new CategoryDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle
+                }).ToList()
+
+            };
+
+            return Ok(response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromBody] CreateArticleRequestDto request)
         {

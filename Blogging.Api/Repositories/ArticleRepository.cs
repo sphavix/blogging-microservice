@@ -25,6 +25,12 @@ namespace Blogging.Api.Repositories
             return article;
         }
 
+        public async Task<Article?> GetArticleByUrl(string url)
+        {
+            var article = await _context.Articles.Include(x => x.Categories).FirstOrDefaultAsync(x => x.UrlHandle == url);
+            return article;
+        }
+
         public async Task<Article> CreateArticleAsync(Article article)
         {
             await _context.Articles.AddAsync(article);
